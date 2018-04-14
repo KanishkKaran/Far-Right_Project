@@ -11,3 +11,13 @@ Some important thoughts that helped me in progressing with the research:
 
 > Main Question: What online tools are they using for their campaigns?
 
+## What did I find? 
+
+Well you can read the project in pdf as well:
+
+I have posted my master's project on this docdroid link: https://www.docdroid.net/NwXNHdr/far-right-meme-campaign.pdf 
+
+Please take a look and let me know if you can contribute in this! Happy to work along. 
+
+
+
