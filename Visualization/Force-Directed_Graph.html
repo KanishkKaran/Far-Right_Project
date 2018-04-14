@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.link {
+  fill: none;
+  stroke: #666;
+  stroke-width: 1.5px;
+}
+
+#licensing {
+  fill: green;
+}
+
+.link.licensing {
+  stroke: green;
+}
+
+.link.resolved {
+  stroke-dasharray: 0,2 1;
+}
+
+circle {
+  fill: #ccc;
+  stroke: #333;
+  stroke-width: 1.5px;
+}
+
+text {
+  font: 10px sans-serif;
+  pointer-events: none;
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+}
+
+</style>
+<body>
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script>
+
+// http://blog.thomsonreuters.com/index.php/mobile-patent-suits-graphic-of-the-day/
+var links = [
+  {source: "ReconqusitaGermania", target: "PaulAbr89089961", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "SiegfriedGregor", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "dahubi_ibra", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Seubert_Osel", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "LiberalistFull", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "animeaintgay", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "KaiservonGottII", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "NAME8888889i8", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Bahnbeamtenwitw", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "904424142870601731", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "DahteSepp", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Heinz2407", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "FaCeOfGoRe13", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "EgoRepair", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "kruanja", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "DfNxtz", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Jetztundhier92", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "ASchulz035", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "theHeretic___", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "darksideofkek", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "R3nSo3", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "ConHen234", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Erwin486807831", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "MarkVonOstrava", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "SinchiAwqaq", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "hpmax", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "derFrog_", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "CrankBert", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "KonservatoR_78", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "AbrahamPaul31", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "FridmundH", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "anonkarly", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "WrongthinkerGER", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "roswellmcdio", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "MarvinCake139", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Zwergenpflege", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "freiheit_21", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Goldbereicherer", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Deutscher_17", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "TyrssonDeutsch", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "CeamHD", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "schlacklsepp", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "MarkuszKoljac", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "AfDchankhan", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "AfD1594", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "TheDefi4nt", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "treudeutscher", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "HansPet87216856", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Oswald00969933", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "samibopro", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "rpgoetz", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "koeterrasse", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Aufklrer1", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Marie_Sophie_St", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "mulmius", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "No1MerkelHasser4", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "leslieardins", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "HeikoLeiter", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "LiebeZumVolk", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "der_zischke", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "wunderteamX", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "heise1233456", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "MilkyNotes", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "DirkHossbach", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "czaro_m", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "VerfassungV", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "indenlinden1", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "KSKNico", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "tangaroy1", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "TorusBlume", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "GNahles", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Liesenfleger", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "9IBrownie", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "ElektrojudeHD", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "JLeddi74", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "AlexHannoi1896", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "VolksLiebe", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "MatthiasM19", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "ShlomosShlomo", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Heinz10X", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "ostmark553", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Jix6ix", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Muhamed_al_afre", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "MalWieder_real", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "PatriotSomebody", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "MatthiasB1963", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Sterngleiter", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "pretox_x", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "CaroMoll4", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Hartz_Der_IV", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Vergessen01", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Alfredthe2nd", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "AndyEier1", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "PestoCholera", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "nicky_chelli", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "KarlMurabi", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "trueY4K", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Mohammed_Alafi_", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Stefan_RW84", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "TeutemanTuts", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Credlon1", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "DerAmalek", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "DerAmalek", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Turok997", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "nansen_harald", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "NajibullaX", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "crushtheelite1", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "FullCapitalist", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Ichsagemeine", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "olafmagnusson91", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Jornschmiedema", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "BrandNie", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "HeikosGlas", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "MuttiFerkel", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "JustAnotherReco", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "hansklauklaus", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "SoRenDEU", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "HerrmannBergman", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Wendepunkt92", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "KilinaSiefer", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "kons_delta", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "methjunk", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "hellsahmon", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "entefetz", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Johnbirke2", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "bart11871", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Schandmaul3", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Liane2017", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "HaddadAlam", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Btw17AfD", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "ThomasMntzer4", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "DieEineNation", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "firstrodewitzer", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "WildeverwegeneJ", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Hegel0309rg03", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "bleigrau", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "WilhelmAckerma1", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "xAntifatrollx", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "karl_friedrich1", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Muellpudding", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "TrauDichGermany", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "SociCapitalist", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "paulderpatriot", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "HManbrand", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Leon250B", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Kuk_Ident", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "Pollux55396020", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "deutschnat1onal", type: "Interaction"},
+  {source: "ReconqusitaGermania", target: "NewmanJohn11", type: "Interaction"},
+  {source: "darksideofkek", target: "hpmax", type: "Interaction"},
+  {source: "darksideofkek", target: "PaulAbr89089961", type: "Interaction"},
+  {source: "darksideofkek", target: "Deadplan_", type: "Interaction"},
+  {source: "darksideofkek", target: "maik_brenner", type: "Interaction"},
+  {source: "darksideofkek", target: "MaxHaiHail1", type: "Interaction"},
+  {source: "darksideofkek", target: "AfDsupp55", type: "Interaction"},
+  {source: "darksideofkek", target: "Heinz2407", type: "Interaction"},
+  {source: "darksideofkek", target: "ToniMola1989", type: "Interaction"},
+  {source: "darksideofkek", target: "ich_bin_toool", type: "Interaction"},
+  {source: "darksideofkek", target: "Hildega42607916", type: "Interaction"},
+  {source: "darksideofkek", target: "DerBoeseDoener", type: "Interaction"},
+  {source: "darksideofkek", target: "ASchulz035", type: "Interaction"},
+  {source: "darksideofkek", target: "R3nSo3", type: "Interaction"},
+  {source: "darksideofkek", target: "Hans___1998", type: "Interaction"},
+  {source: "darksideofkek", target: "SinchiAwqaq", type: "Interaction"},
+  {source: "darksideofkek", target: "aa58321388", type: "Interaction"},
+  {source: "darksideofkek", target: "LannesHannen", type: "Interaction"},
+  {source: "darksideofkek", target: "dahubi_ibra", type: "Interaction"},
+  {source: "darksideofkek", target: "KommissarF", type: "Interaction"},
+  {source: "darksideofkek", target: "weisthor905", type: "Interaction"},
+  {source: "darksideofkek", target: "Luminoresthear", type: "Interaction"},
+  {source: "darksideofkek", target: "freiheit_21", type: "Interaction"},
+  {source: "darksideofkek", target: "Zwergenpflege", type: "Interaction"},
+  {source: "darksideofkek", target: "Frankenspeer", type: "Interaction"},
+  {source: "darksideofkek", target: "MarkuszKoljac", type: "Interaction"},
+  {source: "darksideofkek", target: "nurwerwagt", type: "Interaction"},
+  {source: "darksideofkek", target: "CaroMoll4", type: "Interaction"},
+  {source: "darksideofkek", target: "treudeutscher", type: "Interaction"},
+  {source: "darksideofkek", target: "TorstenDonner", type: "Interaction"},
+  {source: "darksideofkek", target: "SimonDerPatriot", type: "Interaction"},
+  {source: "darksideofkek", target: "olafmagnusson91", type: "Interaction"},
+  {source: "darksideofkek", target: "Marie_Sophie_St", type: "Interaction"},
+  {source: "darksideofkek", target: "Oswald00969933", type: "Interaction"},
+  {source: "darksideofkek", target: "der_zischke", type: "Interaction"},
+  {source: "darksideofkek", target: "BTW2017AfD", type: "Interaction"},
+  {source: "darksideofkek", target: "heise1233456", type: "Interaction"},
+  {source: "darksideofkek", target: "firstofthefirs2", type: "Interaction"},
+  {source: "darksideofkek", target: "ankelika96", type: "Interaction"},
+  {source: "darksideofkek", target: "FaCeOfGoRe13", type: "Interaction"},
+  {source: "darksideofkek", target: "IntuitivHandeln", type: "Interaction"},
+  {source: "darksideofkek", target: "MlCnkrkpU9Zfzx6", type: "Interaction"},
+  {source: "darksideofkek", target: "TVDuellBot", type: "Interaction"},
+  {source: "darksideofkek", target: "ostmark552", type: "Interaction"},
+  {source: "darksideofkek", target: "Patroz7678", type: "Interaction"},
+  {source: "darksideofkek", target: "JLeddi74", type: "Interaction"},
+  {source: "darksideofkek", target: "Ulf12168221", type: "Interaction"},
+  {source: "darksideofkek", target: "ErnstBismarck1", type: "Interaction"},
+  {source: "darksideofkek", target: "DieWahrheitsieg", type: "Interaction"},
+  {source: "darksideofkek", target: "Zwiebelpulver", type: "Interaction"},
+  {source: "darksideofkek", target: "TorusBlume", type: "Interaction"},
+  {source: "darksideofkek", target: "vuko_luka", type: "Interaction"},
+  {source: "darksideofkek", target: "dirkdiet", type: "Interaction"},
+  {source: "darksideofkek", target: "TheDefi4nt", type: "Interaction"},
+  {source: "darksideofkek", target: "GNahles", type: "Interaction"},
+  {source: "darksideofkek", target: "ATreubrodt", type: "Interaction"},
+  {source: "darksideofkek", target: "v4cuumGER", type: "Interaction"},
+  {source: "darksideofkek", target: "ManuelTrompelt", type: "Interaction"},
+  {source: "darksideofkek", target: "fatherlandsfury", type: "Interaction"},
+  {source: "darksideofkek", target: "KarlMurabi", type: "Interaction"},
+  {source: "darksideofkek", target: "trueY4K", type: "Interaction"},
+  {source: "darksideofkek", target: "MMueller012", type: "Interaction"},
+  {source: "darksideofkek", target: "Mohammed_Alafi_", type: "Interaction"},
+  {source: "darksideofkek", target: "K3Andi", type: "Interaction"},
+  {source: "darksideofkek", target: "Leon250B", type: "Interaction"},
+  {source: "darksideofkek", target: "antialt1", type: "Interaction"},
+  {source: "darksideofkek", target: "derFrog_", type: "Interaction"},
+  {source: "darksideofkek", target: "Turok997", type: "Interaction"},
+  {source: "darksideofkek", target: "amigohome1887", type: "Interaction"},
+  {source: "darksideofkek", target: "koeterrasse", type: "Interaction"},
+  {source: "darksideofkek", target: "FullCapitalist", type: "Interaction"},
+  {source: "darksideofkek", target: "WehrhafterP", type: "Interaction"},
+  {source: "darksideofkek", target: "Jeb_Ident", type: "Interaction"},
+  {source: "darksideofkek", target: "derpreusse1914", type: "Interaction"},
+  {source: "darksideofkek", target: "123Lenchen", type: "Interaction"},
+  {source: "darksideofkek", target: "Aragon22224611", type: "Interaction"},
+  {source: "darksideofkek", target: "ThomasGotthard1", type: "Interaction"},
+  {source: "darksideofkek", target: "sdfsfdsfsdf6", type: "Interaction"},
+  {source: "darksideofkek", target: "kons_delta", type: "Interaction"},
+  {source: "darksideofkek", target: "methjunk", type: "Interaction"},
+  {source: "darksideofkek", target: "1qpKi", type: "Interaction"},
+  {source: "darksideofkek", target: "ana_vukova", type: "Interaction"},
+  {source: "darksideofkek", target: "FSN_Rev", type: "Interaction"},
+  {source: "darksideofkek", target: "ThomasMntzer4", type: "Interaction"},
+  {source: "darksideofkek", target: "DieEineNation", type: "Interaction"},
+  {source: "darksideofkek", target: "tommlle62332330", type: "Interaction"},
+  {source: "darksideofkek", target: "tangaroy1", type: "Interaction"},
+  {source: "darksideofkek", target: "Wilhelm_Koerner", type: "Interaction"},
+  {source: "darksideofkek", target: "Turok_97", type: "Interaction"},
+  {source: "darksideofkek", target: "DerPatriot__", type: "Interaction"},
+  {source: "darksideofkek", target: "Bodo30189571", type: "Interaction"},
+  {source: "darksideofkek", target: "karl_friedrich1", type: "Interaction"},
+  {source: "darksideofkek", target: "TrauDichGermany", type: "Interaction"},
+  {source: "darksideofkek", target: "xAntifatrollx", type: "Interaction"},
+  {source: "darksideofkek", target: "Credlon1", type: "Interaction"},
+  {source: "darksideofkek", target: "HManbrand", type: "Interaction"},
+  {source: "darksideofkek", target: "MichiF76", type: "Interaction"},
+  {source: "darksideofkek", target: "AngeloFerkel", type: "Interaction"},
+
+];
+
+var nodes = {};
+
+// Compute the distinct nodes from the links.
+links.forEach(function(link) {
+  link.source = nodes[link.source] || (nodes[link.source] = {name: link.source});
+  link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
+});
+
+var width = 1400,
+    height = 1200;
+
+var force = d3.layout.force()
+    .nodes(d3.values(nodes))
+    .links(links)
+    .size([width, height])
+    .linkDistance(60)
+    .charge(-300)
+    .on("tick", tick)
+    .start();
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+// Per-type markers, as they don't inherit styles.
+svg.append("defs").selectAll("marker")
+    .data(["suit", "licensing", "resolved"])
+  .enter().append("marker")
+    .attr("id", function(d) { return d; })
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 15)
+    .attr("refY", -1.5)
+    .attr("markerWidth", 10)
+    .attr("markerHeight", 10)
+    .attr("orient", "auto")
+  .append("path")
+    .attr("d", "M0,-5L10,0L0,5");
+
+var path = svg.append("g").selectAll("path")
+    .data(force.links())
+  .enter().append("path")
+    .attr("class", function(d) { return "link " + d.type; })
+    .attr("marker-end", function(d) { return "url(#" + d.type + ")"; });
+
+var circle = svg.selectAll("circle")
+    .data(force.nodes())
+  .enter().append("g")
+    .attr("class", "circle")
+    .call(force.drag);
+
+    circle.append("image")
+          .attr("xlink:href", "https://raw.githubusercontent.com/KanishkKaran/Far-Right_Project/master/favicon.ico")
+          .attr("x", -8)
+          .attr("y", -8)
+          .attr("width", 20)
+          .attr("height", 20);
+
+var text = svg.append("g").selectAll("text")
+    .data(force.nodes())
+  .enter().append("text")
+    .attr("x", 8)
+    .attr("y", ".31em")
+    .style("font-size", "15px")
+    .style('fill', 'Black')
+    .text(function(d) { return d.name; });
+
+// Use elliptical arc path segments to doubly-encode directionality.
+function tick() {
+  path.attr("d", linkArc);
+  circle.attr("transform", transform);
+  text.attr("transform", transform);
+}
+
+function linkArc(d) {
+  var dx = d.target.x - d.source.x,
+      dy = d.target.y - d.source.y,
+      dr = Math.sqrt(dx * dx + dy * dy);
+  return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+}
+
+function transform(d) {
+  return "translate(" + d.x + "," + d.y + ")";
+}
+
+</script>
