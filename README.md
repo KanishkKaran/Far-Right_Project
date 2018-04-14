@@ -4,7 +4,10 @@ This project was my Master's Project at Columbia University. In this project, I 
 
 Some important thoughts that helped me in progressing with the research:
 > Who are spreading these campaigns?
+
 > Are these camapaigns active in other countries?
+
 > What's their agenda ?
+
 > Main Question: What online tools are they using for their campaigns?
 
